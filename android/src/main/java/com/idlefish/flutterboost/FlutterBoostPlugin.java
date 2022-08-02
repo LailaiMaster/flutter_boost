@@ -23,7 +23,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 
 public class FlutterBoostPlugin implements FlutterPlugin, NativeRouterApi, ActivityAware {
     private static final String TAG = FlutterBoostPlugin.class.getSimpleName();
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     private FlutterEngine engine;
     private FlutterRouterApi channel;
     private FlutterBoostDelegate delegate;

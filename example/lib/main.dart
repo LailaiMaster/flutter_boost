@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_boost/flutter_boost.dart';
 import 'package:flutter_boost_example/case/bottom_navigation_bar_demo.dart';
 import 'package:flutter_boost_example/case/flutter_to_flutter_sample.dart';
@@ -166,7 +167,10 @@ class _MyAppState extends State<MyApp> {
     'firstFirst': (settings, uniqueId) {
       return PageRouteBuilder<dynamic>(
           settings: settings,
-          pageBuilder: (_, __, ___) => FirstFirstRouteWidget());
+          opaque: false,
+          pageBuilder: (_, __, ___) {
+            return FirstFirstRouteWidget();
+          });
     },
     'willPop': (settings, uniqueId) {
       return PageRouteBuilder<dynamic>(

@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boost/flutter_boost.dart';
+import './simple_page_widgets.dart';
 
 class FlutterRouteWidget extends StatefulWidget {
-  FlutterRouteWidget({required this.params, required this.message, required this.uniqueId});
+  FlutterRouteWidget(
+      {required this.params, required this.message, required this.uniqueId});
 
   final Map params;
   final String message;
@@ -14,26 +16,47 @@ class FlutterRouteWidget extends StatefulWidget {
 }
 
 class _FlutterRouteWidgetState extends State<FlutterRouteWidget>
-    with PageVisibilityObserver {
+    with PageVisibilityObserver, SingleTickerProviderStateMixin {
   static const String _kTag = 'page_visibility';
   bool withContainer = true;
-
+  late AnimationController _animationController;
   @override
   void initState() {
     super.initState();
     Logger.log('$_kTag#initState, ${widget.uniqueId}, $this');
+    debugPrint('----请将App切入后台----');
+    Future.delayed(Duration(seconds: 3), () {
+      debugPrint('----3s 打开路由-----');
+
+      ///dialog
+      // showDialog(
+      //     context: context,
+      //     builder: (c) {
+      //       return FirstFirstRouteWidget();
+      //     });
+      ///带动画的router
+      BoostNavigator.instance.push("firstFirst", withContainer: false);
+    });
+
+    ///模拟某个动画
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 30),
+    )..addListener(() {});
+    _animationController.forward();
   }
 
   @override
   void didChangeDependencies() {
     Logger.log('$_kTag#didChangeDependencies, ${widget.uniqueId}, $this');
-    PageVisibilityBinding.instance.addObserver(this, ModalRoute.of(context)!);
+    // PageVisibilityBinding.instance.addObserver(this, ModalRoute.of(context)!);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     PageVisibilityBinding.instance.removeObserver(this);
+    _animationController.dispose();
     Logger.log('$_kTag#dispose~, ${widget.uniqueId}, $this');
     super.dispose();
   }
@@ -90,6 +113,14 @@ class _FlutterRouteWidgetState extends State<FlutterRouteWidget>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              ///旋转动画
+              RotationTransition(
+                turns: _animationController,
+                child: Image.asset(
+                  'images/flutter.png',
+                  height: 100,
+                ),
+              ),
               Container(
                 margin:
                     const EdgeInsets.only(left: 8.0, top: 10.0, bottom: 20.0),
@@ -144,9 +175,9 @@ class _FlutterRouteWidgetState extends State<FlutterRouteWidget>
                       'Open native page',
                       style: TextStyle(fontSize: 22.0, color: Colors.blue),
                     )),
-                onTap: () => BoostNavigator.instance
-                    .push("native")
-                    .then((value) => print("Return from Native: ${value?.toString()}")),
+                onTap: () => BoostNavigator.instance.push("native").then(
+                    (value) =>
+                        print("Return from Native: ${value?.toString()}")),
               ),
               InkWell(
                 child: Container(

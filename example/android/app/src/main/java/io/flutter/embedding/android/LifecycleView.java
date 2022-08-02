@@ -18,7 +18,7 @@ import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.FlutterShellArgs;
 import io.flutter.plugin.platform.PlatformPlugin;
 import io.flutter.view.FlutterMain;
-
+import java.util.List;
 public class LifecycleView extends FrameLayout implements LifecycleOwner, FlutterActivityAndFragmentDelegate.Host {
   protected static final String ARG_DART_ENTRYPOINT = "dart_entrypoint";
   protected static final String ARG_INITIAL_ROUTE = "initial_route";
@@ -44,7 +44,11 @@ public class LifecycleView extends FrameLayout implements LifecycleOwner, Flutte
   public void setArguments(Bundle args) {
     mArguments = args;
   }
-
+  public boolean shouldDispatchAppLifecycleState() { return true; }
+  public void updateSystemUiOverlays() {}
+  public String getDartEntrypointLibraryUri() { return null; }
+  public ExclusiveAppComponent<Activity> getExclusiveAppComponent() { return mDelegate; }
+  public List<String> getDartEntrypointArgs() { return null; }
   public Bundle getArguments() {
     return mArguments;
   }
